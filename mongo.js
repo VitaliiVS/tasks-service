@@ -1,12 +1,12 @@
 const MongoClient = require('mongodb').MongoClient
 const assert = require('assert')
 
-const MONGO_URL = 'mongodb://localhost:27017/'
+const mongoUri = 'mongodb://localhost:27017/'
 const dbName = 'db'
 const colName = 'tasks'
 
 module.exports = (app) => {
-    const client = new MongoClient(MONGO_URL, { useUnifiedTopology: true })
+    const client = new MongoClient(mongoUri, { useUnifiedTopology: true })
 
     client.connect((err) => {
         assert.strictEqual(null, err)
