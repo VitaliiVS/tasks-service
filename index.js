@@ -15,13 +15,13 @@ require('./mongo')(app)
 
 router.get('/tasks', async (ctx) => {
     ctx.status = 200
-    ctx.body = await ctx.app.tasks.find().toArray()
+    ctx.body = await ctx.app.tasks.find({ 'isDeleted':false }).toArray()
 })
 
 router.post('/tasks', async (ctx) => {
     await ctx.app.tasks.insertOne(ctx.request.body)
     ctx.status = 201
-    ctx.body = await ctx.app.tasks.find().toArray()
+    ctx.body = await ctx.app.tasks.find({ 'isDeleted':false }).toArray()
 })
 
 router.get('/tasks/:id', async (ctx) => {
@@ -34,14 +34,14 @@ router.put('/tasks/:id', async (ctx) => {
     const valuesToUpdate = { $set: ctx.request.body }
     await ctx.app.tasks.updateOne(documentQuery, valuesToUpdate)
     ctx.status = 200
-    ctx.body = await ctx.app.tasks.find().toArray()
+    ctx.body = await ctx.app.tasks.find({ 'isDeleted':false }).toArray()
 })
 
 router.delete('/tasks/:id', async (ctx) => {
     const documentQuery = { '_id': ObjectID(ctx.params.id) }
     await ctx.app.tasks.deleteOne(documentQuery)
     ctx.status = 200
-    ctx.body = await ctx.app.tasks.find().toArray()
+    ctx.body = await ctx.app.tasks.find({ 'isDeleted':false }).toArray()
 })
 
 app.use(router.routes()).use(router.allowedMethods())
