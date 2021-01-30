@@ -3,7 +3,8 @@ const assert = require('assert')
 
 const mongoUri = 'mongodb://localhost:27017/'
 const dbName = 'db'
-const colName = 'tasks'
+const tasks = 'tasks'
+const people = 'people'
 
 module.exports = (app) => {
     const client = new MongoClient(mongoUri, { useUnifiedTopology: true })
@@ -13,7 +14,8 @@ module.exports = (app) => {
 
         const db = client.db(dbName)
 
-        app.tasks = db.collection(colName)
+        app.tasks = db.collection(tasks)
+        app.people = db.collection(people)
 
         console.log('Connected successfully to server')
     })
