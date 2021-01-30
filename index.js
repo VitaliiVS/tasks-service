@@ -48,6 +48,12 @@ router.post("/register", async (ctx) => {
     } else {
         ctx.status = 201
         await ctx.app.people.insertOne(ctx.request.body)
+        ctx.body = {
+            token: jwt.issue({
+                user: "user",
+                role: "user"
+            })
+        }
     }
 })
 
