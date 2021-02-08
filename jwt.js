@@ -9,7 +9,7 @@ JWTErrorHandler = (ctx, next) => {
         if (401 == err.status) {
             ctx.status = 401
             ctx.body = {
-                "error": "Not authorized"
+                'error': 'Not authorized'
             }
         } else {
             throw err
