@@ -26,10 +26,10 @@ router.post('/auth', async (ctx) => {
         if (user[0].username === requestUsername && user[0].password === requestPassword) {
             ctx.body = {
                 token: jwt.issue({
-                    user: 'user',
-                    role: 'user'
+                    user: user[0]
                 })
             }
+
         }
     } else {
         ctx.status = 401
@@ -41,18 +41,18 @@ router.post('/register', async (ctx) => {
     const requestUsername = ctx.request.body.username
     const requestPassword = ctx.request.body.password
 
-    const user = await ctx.app.people.find({ 'username': requestUsername }).toArray()
+    const users = await ctx.app.people.find({ 'username': requestUsername }).toArray()
     if (requestUsername !== '' && requestPassword !== '') {
-        if (user.some(elem => elem.username === requestUsername)) {
+        if (users.some(elem => elem.username === requestUsername)) {
             ctx.status = 409
             ctx.body = { error: 'Username already in use' }
         } else {
             ctx.status = 201
             await ctx.app.people.insertOne(ctx.request.body)
+            const user = await ctx.app.people.find({ 'username': requestUsername, 'password': requestPassword }).toArray()
             ctx.body = {
                 token: jwt.issue({
-                    user: 'user',
-                    role: 'user'
+                    user: user[0]
                 })
             }
         }
@@ -63,27 +63,31 @@ router.post('/register', async (ctx) => {
 })
 
 securedRouter.get('/tasks', async (ctx) => {
+    const userId = ctx.request.query.userId
     ctx.status = 200
-    ctx.body = await ctx.app.tasks.find({ 'isDeleted': false }).toArray()
+    ctx.body = await ctx.app.tasks.find({ 'createdBy': userId, 'isDeleted': false }).toArray()
 })
 
 securedRouter.post('/tasks', async (ctx) => {
+    const userId = ctx.request.body.createdBy
     await ctx.app.tasks.insertOne(ctx.request.body)
     ctx.status = 201
-    ctx.body = await ctx.app.tasks.find({ 'isDeleted': false }).toArray()
-})
-
-securedRouter.get('/tasks/:id', async (ctx) => {
-    ctx.status = 200
-    ctx.body = await ctx.app.tasks.findOne({ '_id': ObjectID(ctx.params.id) })
+    ctx.body = await ctx.app.tasks.find({ 'createdBy': userId, 'isDeleted': false }).toArray()
 })
 
 securedRouter.put('/tasks/:id', async (ctx) => {
     const documentQuery = { '_id': ObjectID(ctx.params.id) }
     const valuesToUpdate = { $set: ctx.request.body }
+    const userId = ctx.request.body.createdBy
     await ctx.app.tasks.updateOne(documentQuery, valuesToUpdate)
     ctx.status = 200
-    ctx.body = await ctx.app.tasks.find({ 'isDeleted': false }).toArray()
+    ctx.body = await ctx.app.tasks.find({ 'createdBy': userId, 'isDeleted': false }).toArray()
+})
+
+
+securedRouter.get('/tasks/:id', async (ctx) => {
+    ctx.status = 200
+    ctx.body = await ctx.app.tasks.findOne({ '_id': ObjectID(ctx.params.id) })
 })
 
 securedRouter.delete('/tasks/:id', async (ctx) => {
