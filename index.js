@@ -33,7 +33,7 @@ router.post('/auth', async (ctx) => {
         }
     } else {
         ctx.status = 401
-        ctx.body = { error: 'Invalid login' }
+        ctx.body = { error: 'Invalid login or password' }
     }
 })
 
