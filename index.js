@@ -9,7 +9,7 @@ const jsonwebtoken = require('jsonwebtoken')
 
 const app = new Koa()
 const router = new Router()
-const securedRouter = new Router()
+const securedRouter = new Router({ prefix: '/tasks' })
 
 app.use(cors())
 app.use(logger())
@@ -63,47 +63,74 @@ router.post('/register', async (ctx) => {
     }
 })
 
-securedRouter.get('/tasks', async (ctx) => {
+securedRouter.get('/', async (ctx) => {
     const userId = ctx.request.query.userId
     ctx.status = 200
     ctx.body = await ctx.app.tasks.find({ 'createdBy': userId, 'isDeleted': false }).toArray()
 })
 
-securedRouter.post('/tasks', async (ctx) => {
-    const userId = ctx.request.body.createdBy
-    await ctx.app.tasks.insertOne(ctx.request.body)
-    ctx.status = 201
-    ctx.body = await ctx.app.tasks.find({ 'createdBy': userId, 'isDeleted': false }).toArray()
+securedRouter.post('/', async (ctx) => {
+    if (Object.keys(ctx.request.body).length !== 0) {
+        const userId = ctx.request.body.createdBy
+        await ctx.app.tasks.insertOne(ctx.request.body)
+        ctx.status = 201
+        ctx.body = await ctx.app.tasks.find({ 'createdBy': userId, 'isDeleted': false }).toArray()
+    } else {
+        ctx.status = 400
+        ctx.body = { error: 'Body can\'t be empty' }
+    }
 })
 
-securedRouter.put('/tasks/:id', async (ctx) => {
-    const documentQuery = { '_id': ObjectID(ctx.params.id) }
-    const valuesToUpdate = { $set: ctx.request.body }
+securedRouter.put('/:id', async (ctx) => {
+    if (Object.keys(ctx.request.body).length !== 0) {
+        const documentQuery = { '_id': ObjectID(ctx.params.id) }
+        const valuesToUpdate = { $set: ctx.request.body }
+        const headers = ctx.request.header
+        const user = jsonwebtoken.decode(headers.authorization.slice(7))
+        const task = await ctx.app.tasks.find({ '_id': ObjectID(ctx.params.id) }).toArray()
+
+        if (user.user.userId === task[0].createdBy) {
+            await ctx.app.tasks.updateOne(documentQuery, valuesToUpdate)
+            ctx.status = 200
+            ctx.body = await ctx.app.tasks.find({ 'createdBy': user.user.userId, 'isDeleted': false }).toArray()
+        } else {
+            ctx.status = 403
+            ctx.body = { error: 'User don\'t has sufficient privileges' }
+        }
+    } else {
+        ctx.status = 400
+        ctx.body = { error: 'Body can\'t be empty' }
+    }
+})
+
+securedRouter.get('/:id', async (ctx) => {
     const headers = ctx.request.header
     const user = jsonwebtoken.decode(headers.authorization.slice(7))
     const task = await ctx.app.tasks.find({ '_id': ObjectID(ctx.params.id) }).toArray()
 
     if (user.user.userId === task[0].createdBy) {
-        await ctx.app.tasks.updateOne(documentQuery, valuesToUpdate)
+        ctx.status = 200
+        ctx.body = await ctx.app.tasks.findOne({ '_id': ObjectID(ctx.params.id) })
+    } else {
+        ctx.status = 403
+        ctx.body = { error: 'User don\'t has sufficient privileges' }
+    }
+})
+
+securedRouter.delete('/:id', async (ctx) => {
+    const documentQuery = { '_id': ObjectID(ctx.params.id) }
+    const headers = ctx.request.header
+    const user = jsonwebtoken.decode(headers.authorization.slice(7))
+    const task = await ctx.app.tasks.find({ '_id': ObjectID(ctx.params.id) }).toArray()
+
+    if (user.user.userId === task[0].createdBy) {
+        await ctx.app.tasks.deleteOne(documentQuery)
         ctx.status = 200
         ctx.body = await ctx.app.tasks.find({ 'createdBy': user.user.userId, 'isDeleted': false }).toArray()
     } else {
         ctx.status = 403
         ctx.body = { error: 'User don\'t has sufficient privileges' }
     }
-
-})
-
-securedRouter.get('/tasks/:id', async (ctx) => {
-    ctx.status = 200
-    ctx.body = await ctx.app.tasks.findOne({ '_id': ObjectID(ctx.params.id) })
-})
-
-securedRouter.delete('/tasks/:id', async (ctx) => {
-    const documentQuery = { '_id': ObjectID(ctx.params.id) }
-    await ctx.app.tasks.deleteOne(documentQuery)
-    ctx.status = 200
-    ctx.body = await ctx.app.tasks.find({ 'isDeleted': false }).toArray()
 })
 
 app.use(router.routes()).use(router.allowedMethods())
