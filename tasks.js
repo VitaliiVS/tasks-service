@@ -8,17 +8,23 @@ const router = new Router({ prefix: '/tasks' })
 router.use(jwt.errorHandler()).use(jwt.jwt())
 
 router.get('/', async (ctx) => {
-    const userId = ctx.request.query.userId
+    const headers = ctx.request.header
+    const user = jsonwebtoken.decode(headers.authorization.slice(7))
+
     ctx.status = 200
-    ctx.body = await ctx.app.tasks.find({ 'createdBy': userId, 'isDeleted': false }).toArray()
+    ctx.body = await ctx.app.tasks.find({ 'createdBy': user.user.userId, 'isDeleted': false }).toArray()
 })
 
 router.post('/', async (ctx) => {
     if (Object.keys(ctx.request.body).length !== 0) {
-        const userId = ctx.request.body.createdBy
-        await ctx.app.tasks.insertOne(ctx.request.body)
+        const headers = ctx.request.header
+        const user = jsonwebtoken.decode(headers.authorization.slice(7))
+        const task = ctx.request.body
+        task.createdBy = user.user.userId
+
+        await ctx.app.tasks.insertOne(task)
         ctx.status = 201
-        ctx.body = await ctx.app.tasks.find({ 'createdBy': userId, 'isDeleted': false }).toArray()
+        ctx.body = await ctx.app.tasks.find({ 'createdBy': user.user.userId, 'isDeleted': false }).toArray()
     } else {
         ctx.status = 400
         ctx.body = { error: 'Body can\'t be empty' }
