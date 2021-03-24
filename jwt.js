@@ -3,6 +3,7 @@ const jsonwebtoken = require('jsonwebtoken')
 
 const SECRET = 'test'
 const jwtInstance = jwt({ secret: SECRET })
+const jwtExpDate = '1h'
 
 JWTErrorHandler = (ctx, next) => {
     return next().catch((err) => {
@@ -20,5 +21,5 @@ JWTErrorHandler = (ctx, next) => {
 module.exports.jwt = () => jwtInstance
 module.exports.errorHandler = () => JWTErrorHandler
 module.exports.issue = (payload) => {
-    return jsonwebtoken.sign(payload, SECRET)
+    return jsonwebtoken.sign({ payload }, SECRET, { expiresIn: jwtExpDate })
 }

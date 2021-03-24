@@ -8,6 +8,7 @@ router.post('/', async (ctx) => {
     const requestPassword = ctx.request.body.password
 
     const users = await ctx.app.people.find({ 'username': requestUsername }).toArray()
+
     if (requestUsername !== '' && requestPassword !== '') {
         if (users.some(elem => elem.username === requestUsername)) {
             ctx.status = 409

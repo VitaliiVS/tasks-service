@@ -8,7 +8,7 @@ router.post('/', async (ctx) => {
     const requestPassword = ctx.request.body.password
 
     const user = await ctx.app.people.find({ 'username': requestUsername, 'password': requestPassword }).toArray()
-
+    
     if (user[0]) {
         if (user[0].username === requestUsername && user[0].password === requestPassword) {
             ctx.body = {
@@ -16,7 +16,6 @@ router.post('/', async (ctx) => {
                     user: user[0]
                 })
             }
-
         }
     } else {
         ctx.status = 401
