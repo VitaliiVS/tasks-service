@@ -14,13 +14,10 @@ const Router = require("koa-router");
 const jwtInst = require("./jwt");
 exports.regiterRouter = new Router({ prefix: '/register' });
 exports.regiterRouter.post('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
-    const requestUsername = ctx.request.body.username;
-    const requestPassword = ctx.request.body.password;
-    const users = yield ctx.app.people
-        .find({ username: requestUsername })
-        .toArray();
-    if (requestUsername !== '' && requestPassword !== '') {
-        if (users.some((elem) => elem.username === requestUsername)) {
+    const { username, password } = ctx.request.body;
+    const users = yield ctx.app.people.find({ username: username }).toArray();
+    if (username !== '' && password !== '') {
+        if (users.some((elem) => elem.username === username)) {
             ctx.status = 409;
             ctx.body = { error: 'Username already in use' };
         }
@@ -28,7 +25,7 @@ exports.regiterRouter.post('/', (ctx) => __awaiter(void 0, void 0, void 0, funct
             ctx.status = 201;
             yield ctx.app.people.insertOne(ctx.request.body);
             const user = yield ctx.app.people
-                .find({ username: requestUsername, password: requestPassword })
+                .find({ username: username, password: password })
                 .toArray();
             ctx.body = {
                 token: jwtInst.issue({

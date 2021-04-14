@@ -14,14 +14,12 @@ const Router = require("koa-router");
 const jwtInst = require("./jwt");
 exports.authRouter = new Router({ prefix: '/auth' });
 exports.authRouter.post('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
-    const requestUsername = ctx.request.body.username;
-    const requestPassword = ctx.request.body.password;
+    const { username, password } = ctx.request.body;
     const user = yield ctx.app.people
-        .find({ username: requestUsername, password: requestPassword })
+        .find({ username: username, password: password })
         .toArray();
     if (user[0]) {
-        if (user[0].username === requestUsername &&
-            user[0].password === requestPassword) {
+        if (user[0].username === username && user[0].password === password) {
             ctx.body = {
                 token: jwtInst.issue({
                     user: user[0]

@@ -12,19 +12,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.postTasks = void 0;
 const jsonwebtoken = require("jsonwebtoken");
 const postTasks = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
-    if (Object.keys(ctx.request.body).length === 0) {
+    const { body, header } = ctx.request;
+    if (Object.keys(body).length === 0) {
         ctx.status = 400;
         ctx.body = { error: "Request body can't be empty" };
     }
-    else if (ctx.request.body.taskLabel.trim().length === 0) {
+    else if (body.taskLabel.trim().length === 0) {
         ctx.status = 400;
         ctx.body = { error: "Task title can't be empty" };
     }
     else {
-        const headers = ctx.request.header;
+        const headers = header;
         const jwt = jsonwebtoken.decode(headers.authorization.slice(7));
         const user = jwt.payload.user;
-        const task = ctx.request.body;
+        const task = body;
         task.createdBy = user.userId;
         yield ctx.app.tasks.insertOne(task);
         ctx.status = 201;

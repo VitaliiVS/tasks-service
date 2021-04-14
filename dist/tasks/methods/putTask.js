@@ -13,19 +13,19 @@ exports.putTasks = void 0;
 const mongodb_1 = require("mongodb");
 const jsonwebtoken = require("jsonwebtoken");
 const putTasks = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
-    if (Object.keys(ctx.request.body).length === 0) {
+    const { body, header } = ctx.request;
+    if (Object.keys(body).length === 0) {
         ctx.status = 400;
         ctx.body = { error: "Request body can't be empty" };
     }
-    else if (ctx.request.body.taskLabel.trim().length === 0) {
+    else if (body.taskLabel.trim().length === 0) {
         ctx.status = 400;
         ctx.body = { error: "Task title can't be empty" };
     }
     else {
         const documentQuery = { _id: mongodb_1.ObjectID(ctx.params.id) };
-        const valuesToUpdate = { $set: ctx.request.body };
-        const headers = ctx.request.header;
-        const jwt = jsonwebtoken.decode(headers.authorization.slice(7));
+        const valuesToUpdate = { $set: body };
+        const jwt = jsonwebtoken.decode(header.authorization.slice(7));
         const user = jwt.payload.user;
         const task = yield ctx.app.tasks
             .find({ _id: mongodb_1.ObjectID(ctx.params.id) })

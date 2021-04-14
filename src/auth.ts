@@ -4,18 +4,13 @@ import * as jwtInst from './jwt'
 export const authRouter = new Router({ prefix: '/auth' })
 
 authRouter.post('/', async (ctx) => {
-	const requestUsername = ctx.request.body.username
-	const requestPassword = ctx.request.body.password
-
+	const { username, password } = ctx.request.body
 	const user = await ctx.app.people
-		.find({ username: requestUsername, password: requestPassword })
+		.find({ username: username, password: password })
 		.toArray()
 
 	if (user[0]) {
-		if (
-			user[0].username === requestUsername &&
-			user[0].password === requestPassword
-		) {
+		if (user[0].username === username && user[0].password === password) {
 			ctx.body = {
 				token: jwtInst.issue({
 					user: user[0]
