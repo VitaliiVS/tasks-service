@@ -5,7 +5,7 @@ import * as logger from 'koa-logger'
 
 import { regiterRouter } from './register'
 import { authRouter } from './auth'
-import { tasksRouter } from './tasks'
+import { tasksRouter } from './tasks/tasks'
 import mongo from './mongo'
 
 const app = new Koa()

@@ -1,13 +1,13 @@
 {
-    "version": "4.2.4",
-    "compilerOptions": {
-        "outDir": "./dist",
-        "lib": ["es5", "es6"],
-        "target": "es6",
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true
-    },
-    "include": ["./src/**/*"]
+	"version": "4.2.4",
+	"compilerOptions": {
+		"outDir": "./dist",
+		"lib": ["es5", "es6"],
+		"target": "es6",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true
+	},
+	"include": ["./src/**/*"]
 }

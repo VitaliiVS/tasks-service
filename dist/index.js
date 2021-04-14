@@ -6,7 +6,7 @@ const BodyParser = require("koa-bodyparser");
 const logger = require("koa-logger");
 const register_1 = require("./register");
 const auth_1 = require("./auth");
-const tasks_1 = require("./tasks");
+const tasks_1 = require("./tasks/tasks");
 const mongo_1 = require("./mongo");
 const app = new Koa();
 mongo_1.default(app);
