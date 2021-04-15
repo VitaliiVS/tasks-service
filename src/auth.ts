@@ -3,7 +3,7 @@ import * as jwtInst from './jwt'
 
 export const authRouter = new Router({ prefix: '/auth' })
 
-authRouter.post('/', async (ctx) => {
+authRouter.post('/', async (ctx: any) => {
 	const { username, password } = ctx.request.body
 	const user = await ctx.app.people
 		.find({ username: username, password: password })

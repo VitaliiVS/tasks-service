@@ -13,12 +13,12 @@ exports.deleteTask = void 0;
 const mongodb_1 = require("mongodb");
 const jsonwebtoken = require("jsonwebtoken");
 const deleteTask = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
-    const documentQuery = { _id: mongodb_1.ObjectID(ctx.params.id) };
+    const documentQuery = { _id: new mongodb_1.ObjectID(ctx.params.id) };
     const headers = ctx.request.header;
     const jwt = jsonwebtoken.decode(headers.authorization.slice(7));
     const user = jwt.payload.user;
     const task = yield ctx.app.tasks
-        .find({ _id: mongodb_1.ObjectID(ctx.params.id) })
+        .find({ _id: new mongodb_1.ObjectID(ctx.params.id) })
         .toArray();
     if (user.userId === task[0].createdBy) {
         yield ctx.app.tasks.updateOne(documentQuery, {

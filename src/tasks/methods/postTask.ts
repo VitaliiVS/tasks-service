@@ -1,6 +1,6 @@
 import * as jsonwebtoken from 'jsonwebtoken'
 
-export const postTasks = async (ctx) => {
+export const postTasks = async (ctx: any) => {
 	const { body, header } = ctx.request
 
 	if (Object.keys(body).length === 0) {
@@ -11,7 +11,7 @@ export const postTasks = async (ctx) => {
 		ctx.body = { error: "Task title can't be empty" }
 	} else {
 		const headers = header
-		const jwt = jsonwebtoken.decode(headers.authorization.slice(7))
+		const jwt: any = jsonwebtoken.decode(headers.authorization.slice(7))
 		const user = jwt.payload.user
 		const task = body
 		task.createdBy = user.userId

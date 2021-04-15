@@ -1,8 +1,8 @@
 import * as jsonwebtoken from 'jsonwebtoken'
 
-export const getTasks = async (ctx) => {
+export const getTasks = async (ctx: any) => {
 	const headers = ctx.request.header
-	const jwt = jsonwebtoken.decode(headers.authorization.slice(7))
+	const jwt: any = jsonwebtoken.decode(headers.authorization.slice(7))
 	const user = jwt.payload.user
 
 	ctx.status = 200

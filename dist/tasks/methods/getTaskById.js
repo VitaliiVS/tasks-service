@@ -17,11 +17,13 @@ const getTaskById = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const jwt = jsonwebtoken.decode(headers.authorization.slice(7));
     const user = jwt.payload.user;
     const task = yield ctx.app.tasks
-        .find({ _id: mongodb_1.ObjectID(ctx.params.id) })
+        .find({ _id: new mongodb_1.ObjectID(ctx.params.id) })
         .toArray();
     if (user.userId === task[0].createdBy) {
         ctx.status = 200;
-        ctx.body = yield ctx.app.tasks.findOne({ _id: mongodb_1.ObjectID(ctx.params.id) });
+        ctx.body = yield ctx.app.tasks.findOne({
+            _id: new mongodb_1.ObjectID(ctx.params.id)
+        });
     }
     else {
         ctx.status = 403;

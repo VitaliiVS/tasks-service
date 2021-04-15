@@ -23,12 +23,12 @@ const putTasks = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
         ctx.body = { error: "Task title can't be empty" };
     }
     else {
-        const documentQuery = { _id: mongodb_1.ObjectID(ctx.params.id) };
+        const documentQuery = { _id: new mongodb_1.ObjectID(ctx.params.id) };
         const valuesToUpdate = { $set: body };
         const jwt = jsonwebtoken.decode(header.authorization.slice(7));
         const user = jwt.payload.user;
         const task = yield ctx.app.tasks
-            .find({ _id: mongodb_1.ObjectID(ctx.params.id) })
+            .find({ _id: new mongodb_1.ObjectID(ctx.params.id) })
             .toArray();
         if (user.userId === task[0].createdBy) {
             yield ctx.app.tasks.updateOne(documentQuery, valuesToUpdate);

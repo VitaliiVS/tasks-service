@@ -7,7 +7,7 @@ const dbName = 'db'
 const tasks = 'tasks'
 const people = 'people'
 
-export default (app) => {
+export default (app: any) => {
 	const client = new MongoClient(mongoUri, { useUnifiedTopology: true })
 
 	client.connect((err) => {
