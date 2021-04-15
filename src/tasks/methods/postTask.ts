@@ -1,6 +1,7 @@
 import * as jsonwebtoken from 'jsonwebtoken'
+import { DefaultContext } from 'koa'
 
-export const postTasks = async (ctx: any) => {
+export const postTasks = async (ctx: DefaultContext) => {
 	const { body, header } = ctx.request
 
 	if (Object.keys(body).length === 0) {

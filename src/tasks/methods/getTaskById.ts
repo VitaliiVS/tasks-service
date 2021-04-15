@@ -1,7 +1,8 @@
 import { ObjectID } from 'mongodb'
 import * as jsonwebtoken from 'jsonwebtoken'
+import { DefaultContext } from 'koa'
 
-export const getTaskById = async (ctx: any) => {
+export const getTaskById = async (ctx: DefaultContext) => {
 	const headers = ctx.request.header
 	const jwt: any = jsonwebtoken.decode(headers.authorization.slice(7))
 	const user = jwt.payload.user

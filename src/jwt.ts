@@ -1,11 +1,12 @@
 import * as jwt from 'koa-jwt'
 import * as jsonwebtoken from 'jsonwebtoken'
+import { DefaultContext } from 'koa'
 
 const SECRET = 'test'
 const jwtInstance = jwt({ secret: SECRET })
 const jwtExpDate = '1h'
 
-const JWTErrorHandler = (ctx: any, next: any) =>
+const JWTErrorHandler = (ctx: DefaultContext, next: any) =>
 	next().catch((err: any) => {
 		if (401 == err.status) {
 			ctx.status = 401

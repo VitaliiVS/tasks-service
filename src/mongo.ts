@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb'
+import { Collection, MongoClient } from 'mongodb'
 import * as assert from 'assert'
 
 const mongoUri = 'mongodb://localhost:27017/'

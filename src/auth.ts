@@ -1,9 +1,10 @@
 import * as Router from 'koa-router'
 import * as jwtInst from './jwt'
+import { DefaultContext } from 'koa'
 
 export const authRouter = new Router({ prefix: '/auth' })
 
-authRouter.post('/', async (ctx: any) => {
+authRouter.post('/', async (ctx: DefaultContext) => {
 	const { username, password } = ctx.request.body
 	const user = await ctx.app.people
 		.find({ username: username, password: password })

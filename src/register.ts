@@ -1,15 +1,20 @@
 import * as Router from 'koa-router'
 import * as jwtInst from './jwt'
+import { DefaultContext } from 'koa'
 
 export const regiterRouter = new Router({ prefix: '/register' })
 
-regiterRouter.post('/', async (ctx: any) => {
+regiterRouter.post('/', async (ctx: DefaultContext) => {
 	const { username, password } = ctx.request.body
 
 	const users = await ctx.app.people.find({ username: username }).toArray()
 
 	if (username !== '' && password !== '') {
-		if (users.some((elem: any) => elem.username === username)) {
+		if (
+			users.some(
+				(elem: { username: string }) => elem.username === username
+			)
+		) {
 			ctx.status = 409
 			ctx.body = { error: 'Username already in use' }
 		} else {
