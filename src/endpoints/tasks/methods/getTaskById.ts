@@ -2,8 +2,7 @@ import { ObjectID } from 'mongodb'
 import * as jsonwebtoken from 'jsonwebtoken'
 import { DefaultContext } from 'koa'
 
-export const deleteTask = async (ctx: DefaultContext) => {
-	const documentQuery = { _id: new ObjectID(ctx.params.id) }
+export const getTaskById = async (ctx: DefaultContext) => {
 	const headers = ctx.request.header
 	const jwt: any = jsonwebtoken.decode(headers.authorization.slice(7))
 	const user = jwt.payload.user
@@ -12,15 +11,11 @@ export const deleteTask = async (ctx: DefaultContext) => {
 		.toArray()
 
 	if (user.userId === task[0].createdBy) {
-		await ctx.app.tasks.updateOne(documentQuery, {
-			$set: { isDeleted: true }
-		})
 		ctx.status = 200
-		ctx.body = await ctx.app.tasks
-			.find({ createdBy: user.userId, isDeleted: false })
-			.toArray()
+		ctx.body = await ctx.app.tasks.findOne({
+			_id: new ObjectID(ctx.params.id)
+		})
 	} else {
-		ctx.status = 403
-		ctx.body = { error: "User don't has sufficient privileges" }
+		ctx.forbidden(ctx, "User don't has sufficient privileges")
 	}
 }

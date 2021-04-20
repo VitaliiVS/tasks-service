@@ -38,8 +38,7 @@ const putTasks = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
                 .toArray();
         }
         else {
-            ctx.status = 403;
-            ctx.body = { error: "User don't has sufficient privileges" };
+            ctx.forbidden(ctx, "User don't has sufficient privileges");
         }
     }
 });

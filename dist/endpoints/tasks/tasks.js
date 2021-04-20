@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tasksRouter = void 0;
 const Router = require("koa-router");
-const jwt = require("../jwt");
+const jwt = require("../../middlewares/jwt");
 const getAllTasks_1 = require("./methods/getAllTasks");
 const postTask_1 = require("./methods/postTask");
 const putTask_1 = require("./methods/putTask");

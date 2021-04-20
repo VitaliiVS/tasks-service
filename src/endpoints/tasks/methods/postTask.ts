@@ -5,11 +5,9 @@ export const postTasks = async (ctx: DefaultContext) => {
 	const { body, header } = ctx.request
 
 	if (Object.keys(body).length === 0) {
-		ctx.status = 400
-		ctx.body = { error: "Request body can't be empty" }
+		ctx.badRequest(ctx, "Request body can't be empty")
 	} else if (body.taskLabel.trim().length === 0) {
-		ctx.status = 400
-		ctx.body = { error: "Task title can't be empty" }
+		ctx.badRequest(ctx, "Task title can't be empty")
 	} else {
 		const headers = header
 		const jwt: any = jsonwebtoken.decode(headers.authorization.slice(7))

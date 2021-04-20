@@ -27,8 +27,7 @@ export const putTasks = async (ctx: DefaultContext) => {
 				.find({ createdBy: user.userId, isDeleted: false })
 				.toArray()
 		} else {
-			ctx.status = 403
-			ctx.body = { error: "User don't has sufficient privileges" }
+			ctx.forbidden(ctx, "User don't has sufficient privileges")
 		}
 	}
 }

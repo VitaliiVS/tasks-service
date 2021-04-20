@@ -9,29 +9,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postTasks = void 0;
+exports.deleteTask = void 0;
+const mongodb_1 = require("mongodb");
 const jsonwebtoken = require("jsonwebtoken");
-const postTasks = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
-    const { body, header } = ctx.request;
-    if (Object.keys(body).length === 0) {
-        ctx.status = 400;
-        ctx.body = { error: "Request body can't be empty" };
-    }
-    else if (body.taskLabel.trim().length === 0) {
-        ctx.status = 400;
-        ctx.body = { error: "Task title can't be empty" };
-    }
-    else {
-        const headers = header;
-        const jwt = jsonwebtoken.decode(headers.authorization.slice(7));
-        const user = jwt.payload.user;
-        const task = body;
-        task.createdBy = user.userId;
-        yield ctx.app.tasks.insertOne(task);
-        ctx.status = 201;
+const deleteTask = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+    const documentQuery = { _id: new mongodb_1.ObjectID(ctx.params.id) };
+    const headers = ctx.request.header;
+    const jwt = jsonwebtoken.decode(headers.authorization.slice(7));
+    const user = jwt.payload.user;
+    const task = yield ctx.app.tasks
+        .find({ _id: new mongodb_1.ObjectID(ctx.params.id) })
+        .toArray();
+    if (user.userId === task[0].createdBy) {
+        yield ctx.app.tasks.updateOne(documentQuery, {
+            $set: { isDeleted: true }
+        });
+        ctx.status = 200;
         ctx.body = yield ctx.app.tasks
             .find({ createdBy: user.userId, isDeleted: false })
             .toArray();
     }
+    else {
+        ctx.forbidden(ctx, "User don't has sufficient privileges");
+    }
 });
-exports.postTasks = postTasks;
+exports.deleteTask = deleteTask;

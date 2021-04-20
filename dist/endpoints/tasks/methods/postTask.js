@@ -9,25 +9,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTaskById = void 0;
-const mongodb_1 = require("mongodb");
+exports.postTasks = void 0;
 const jsonwebtoken = require("jsonwebtoken");
-const getTaskById = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
-    const headers = ctx.request.header;
-    const jwt = jsonwebtoken.decode(headers.authorization.slice(7));
-    const user = jwt.payload.user;
-    const task = yield ctx.app.tasks
-        .find({ _id: new mongodb_1.ObjectID(ctx.params.id) })
-        .toArray();
-    if (user.userId === task[0].createdBy) {
-        ctx.status = 200;
-        ctx.body = yield ctx.app.tasks.findOne({
-            _id: new mongodb_1.ObjectID(ctx.params.id)
-        });
+const postTasks = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+    const { body, header } = ctx.request;
+    if (Object.keys(body).length === 0) {
+        ctx.badRequest(ctx, "Request body can't be empty");
+    }
+    else if (body.taskLabel.trim().length === 0) {
+        ctx.badRequest(ctx, "Task title can't be empty");
     }
     else {
-        ctx.status = 403;
-        ctx.body = { error: "User don't has sufficient privileges" };
+        const headers = header;
+        const jwt = jsonwebtoken.decode(headers.authorization.slice(7));
+        const user = jwt.payload.user;
+        const task = body;
+        task.createdBy = user.userId;
+        yield ctx.app.tasks.insertOne(task);
+        ctx.status = 201;
+        ctx.body = yield ctx.app.tasks
+            .find({ createdBy: user.userId, isDeleted: false })
+            .toArray();
     }
 });
-exports.getTaskById = getTaskById;
+exports.postTasks = postTasks;

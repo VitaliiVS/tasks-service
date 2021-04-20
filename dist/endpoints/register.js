@@ -9,17 +9,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authRouter = void 0;
+exports.regiterRouter = void 0;
 const Router = require("koa-router");
-const jwtInst = require("./jwt");
-exports.authRouter = new Router({ prefix: '/auth' });
-exports.authRouter.post('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+const jwtInst = require("../middlewares/jwt");
+exports.regiterRouter = new Router({ prefix: '/register' });
+exports.regiterRouter.post('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = ctx.request.body;
-    const user = yield ctx.app.people
-        .find({ username: username, password: password })
-        .toArray();
-    if (user[0]) {
-        if (user[0].username === username && user[0].password === password) {
+    const users = yield ctx.app.people.find({ username: username }).toArray();
+    if (username !== '' && password !== '') {
+        if (users.some((elem) => elem.username === username)) {
+            ctx.conflict(ctx, 'Username already in use');
+        }
+        else {
+            ctx.status = 201;
+            yield ctx.app.people.insertOne(ctx.request.body);
+            const user = yield ctx.app.people
+                .find({ username: username, password: password })
+                .toArray();
             ctx.body = {
                 token: jwtInst.issue({
                     user: user[0]
@@ -28,7 +34,6 @@ exports.authRouter.post('/', (ctx) => __awaiter(void 0, void 0, void 0, function
         }
     }
     else {
-        ctx.status = 401;
-        ctx.body = { error: 'Invalid login or password' };
+        ctx.badRequest(ctx, 'Username or password cannot be empty');
     }
 }));

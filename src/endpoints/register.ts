@@ -1,5 +1,5 @@
 import * as Router from 'koa-router'
-import * as jwtInst from './jwt'
+import * as jwtInst from '../middlewares/jwt'
 import { DefaultContext } from 'koa'
 
 export const regiterRouter = new Router({ prefix: '/register' })
@@ -15,8 +15,7 @@ regiterRouter.post('/', async (ctx: DefaultContext) => {
 				(elem: { username: string }) => elem.username === username
 			)
 		) {
-			ctx.status = 409
-			ctx.body = { error: 'Username already in use' }
+			ctx.conflict(ctx, 'Username already in use')
 		} else {
 			ctx.status = 201
 			await ctx.app.people.insertOne(ctx.request.body)
@@ -30,7 +29,6 @@ regiterRouter.post('/', async (ctx: DefaultContext) => {
 			}
 		}
 	} else {
-		ctx.status = 400
-		ctx.body = { error: 'Username or password cannot be empty' }
+		ctx.badRequest(ctx, 'Username or password cannot be empty')
 	}
 })
