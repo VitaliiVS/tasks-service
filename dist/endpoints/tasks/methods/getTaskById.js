@@ -26,7 +26,7 @@ const getTaskById = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
     else {
-        ctx.forbidden(ctx, "User don't has sufficient privileges");
+        ctx.forbidden(ctx);
     }
 });
 exports.getTaskById = getTaskById;

@@ -16,6 +16,6 @@ export const getTaskById = async (ctx: DefaultContext) => {
 			_id: new ObjectID(ctx.params.id)
 		})
 	} else {
-		ctx.forbidden(ctx, "User don't has sufficient privileges")
+		ctx.forbidden(ctx)
 	}
 }

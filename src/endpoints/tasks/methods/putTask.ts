@@ -6,11 +6,9 @@ export const putTasks = async (ctx: DefaultContext) => {
 	const { body, header } = ctx.request
 
 	if (Object.keys(body).length === 0) {
-		ctx.status = 400
-		ctx.body = { error: "Request body can't be empty" }
+		ctx.badRequest(ctx, "Request body can't be empty")
 	} else if (body.taskLabel.trim().length === 0) {
-		ctx.status = 400
-		ctx.body = { error: "Task title can't be empty" }
+		ctx.badRequest(ctx, "Task title can't be empty")
 	} else {
 		const documentQuery = { _id: new ObjectID(ctx.params.id) }
 		const valuesToUpdate = { $set: body }
@@ -27,7 +25,7 @@ export const putTasks = async (ctx: DefaultContext) => {
 				.find({ createdBy: user.userId, isDeleted: false })
 				.toArray()
 		} else {
-			ctx.forbidden(ctx, "User don't has sufficient privileges")
+			ctx.forbidden(ctx)
 		}
 	}
 }

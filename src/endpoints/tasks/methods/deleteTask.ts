@@ -20,6 +20,6 @@ export const deleteTask = async (ctx: DefaultContext) => {
 			.find({ createdBy: user.userId, isDeleted: false })
 			.toArray()
 	} else {
-		ctx.forbidden(ctx, "User don't has sufficient privileges")
+		ctx.forbidden(ctx)
 	}
 }

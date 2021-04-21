@@ -15,12 +15,10 @@ const jsonwebtoken = require("jsonwebtoken");
 const putTasks = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const { body, header } = ctx.request;
     if (Object.keys(body).length === 0) {
-        ctx.status = 400;
-        ctx.body = { error: "Request body can't be empty" };
+        ctx.badRequest(ctx, "Request body can't be empty");
     }
     else if (body.taskLabel.trim().length === 0) {
-        ctx.status = 400;
-        ctx.body = { error: "Task title can't be empty" };
+        ctx.badRequest(ctx, "Task title can't be empty");
     }
     else {
         const documentQuery = { _id: new mongodb_1.ObjectID(ctx.params.id) };
@@ -38,7 +36,7 @@ const putTasks = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
                 .toArray();
         }
         else {
-            ctx.forbidden(ctx, "User don't has sufficient privileges");
+            ctx.forbidden(ctx);
         }
     }
 });
