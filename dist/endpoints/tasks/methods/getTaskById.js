@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTaskById = void 0;
 const mongodb_1 = require("mongodb");
 const jsonwebtoken = require("jsonwebtoken");
 const getTaskById = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
@@ -29,4 +28,4 @@ const getTaskById = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
         ctx.forbidden(ctx);
     }
 });
-exports.getTaskById = getTaskById;
+exports.default = () => getTaskById;

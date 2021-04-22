@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.putTasks = void 0;
 const mongodb_1 = require("mongodb");
 const jsonwebtoken = require("jsonwebtoken");
 const putTasks = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
@@ -40,4 +39,4 @@ const putTasks = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
         }
     }
 });
-exports.putTasks = putTasks;
+exports.default = () => putTasks;

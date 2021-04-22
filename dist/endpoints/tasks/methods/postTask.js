@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postTasks = void 0;
 const jsonwebtoken = require("jsonwebtoken");
 const postTasks = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const { body, header } = ctx.request;
@@ -32,4 +31,4 @@ const postTasks = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
             .toArray();
     }
 });
-exports.postTasks = postTasks;
+exports.default = () => postTasks;

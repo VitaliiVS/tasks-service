@@ -2,7 +2,7 @@ import { ObjectID } from 'mongodb'
 import * as jsonwebtoken from 'jsonwebtoken'
 import { DefaultContext } from 'koa'
 
-export const putTasks = async (ctx: DefaultContext) => {
+const putTasks = async (ctx: DefaultContext) => {
 	const { body, header } = ctx.request
 
 	if (Object.keys(body).length === 0) {
@@ -29,3 +29,5 @@ export const putTasks = async (ctx: DefaultContext) => {
 		}
 	}
 }
+
+export default () => putTasks

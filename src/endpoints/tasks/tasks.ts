@@ -1,22 +1,22 @@
 import * as Router from 'koa-router'
 import * as jwt from '../../middlewares/jwt'
 
-import { getTasks } from './methods/getAllTasks'
-import { postTasks } from './methods/postTask'
-import { putTasks } from './methods/putTask'
-import { getTaskById } from './methods/getTaskById'
-import { deleteTask } from './methods/deleteTask'
+import getTasks from './methods/getAllTasks'
+import postTasks from './methods/postTask'
+import putTasks from './methods/putTask'
+import getTaskById from './methods/getTaskById'
+import deleteTask from './methods/deleteTask'
 
 export const tasksRouter = new Router({ prefix: '/tasks' })
 
 tasksRouter.use(jwt.errorHandler()).use(jwt.jwtInst())
 
-tasksRouter.get('/', async (ctx) => getTasks(ctx))
+tasksRouter.get('/', getTasks())
 
-tasksRouter.post('/', async (ctx) => postTasks(ctx))
+tasksRouter.post('/', postTasks())
 
-tasksRouter.put('/:id', async (ctx) => putTasks(ctx))
+tasksRouter.put('/:id', putTasks())
 
-tasksRouter.get('/:id', async (ctx) => getTaskById(ctx))
+tasksRouter.get('/:id', getTaskById())
 
-tasksRouter.delete('/:id', async (ctx) => deleteTask(ctx))
+tasksRouter.delete('/:id', deleteTask())
