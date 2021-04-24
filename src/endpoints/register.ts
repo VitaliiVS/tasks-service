@@ -15,7 +15,7 @@ regiterRouter.post('/', async (ctx: DefaultContext) => {
 				(elem: { username: string }) => elem.username === username
 			)
 		) {
-			ctx.conflict(ctx, 'Username already in use')
+			ctx.conflict('Username already in use')
 		} else {
 			ctx.status = 201
 			await ctx.app.people.insertOne(ctx.request.body)

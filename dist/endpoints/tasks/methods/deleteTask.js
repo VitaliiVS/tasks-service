@@ -29,7 +29,7 @@ const deleteTask = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
             .toArray();
     }
     else {
-        ctx.forbidden(ctx);
+        ctx.forbidden();
     }
 });
 exports.default = () => deleteTask;

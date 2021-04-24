@@ -20,7 +20,7 @@ const deleteTask = async (ctx: DefaultContext) => {
 			.find({ createdBy: user.userId, isDeleted: false })
 			.toArray()
 	} else {
-		ctx.forbidden(ctx)
+		ctx.forbidden()
 	}
 }
 

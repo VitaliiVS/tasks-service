@@ -25,7 +25,7 @@ const errorMethods = (ctx: DefaultContext, next: any) => {
 	}
 
 	for (const code in codeMap) {
-		ctx[code] = (ctx: DefaultContext, message?: string) => {
+		ctx[code] = (message?: string) => {
 			const body = message ? { error: message } : codeMap[code].message
 			ctx.status = codeMap[code].code
 			ctx.body = body

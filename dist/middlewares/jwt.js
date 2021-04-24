@@ -8,7 +8,7 @@ const jwtInstance = jwt({ secret: SECRET });
 const jwtExpDate = '1h';
 const JWTErrorHandler = (ctx, next) => next().catch((err) => {
     if (401 === err.status) {
-        ctx.unauthorized(ctx);
+        ctx.unauthorized();
     }
     else {
         throw err;

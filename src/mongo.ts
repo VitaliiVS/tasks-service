@@ -1,7 +1,6 @@
 import { MongoClient } from 'mongodb'
 import * as assert from 'assert'
-
-const mongoUri = 'mongodb://localhost:27017/'
+import { mongoUri } from './config'
 
 const dbName = 'db'
 const tasks = 'tasks'

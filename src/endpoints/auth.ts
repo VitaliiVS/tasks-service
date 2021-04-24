@@ -19,6 +19,6 @@ authRouter.post('/', async (ctx: DefaultContext) => {
 			}
 		}
 	} else {
-		ctx.badRequest(ctx, 'Invalid login or password')
+		ctx.badRequest('Invalid login or password')
 	}
 })

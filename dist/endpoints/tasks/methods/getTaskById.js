@@ -25,7 +25,7 @@ const getTaskById = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
     else {
-        ctx.forbidden(ctx);
+        ctx.forbidden();
     }
 });
 exports.default = () => getTaskById;

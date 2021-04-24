@@ -18,7 +18,7 @@ exports.regiterRouter.post('/', (ctx) => __awaiter(void 0, void 0, void 0, funct
     const users = yield ctx.app.people.find({ username: username }).toArray();
     if (username !== '' && password !== '') {
         if (users.some((elem) => elem.username === username)) {
-            ctx.conflict(ctx, 'Username already in use');
+            ctx.conflict('Username already in use');
         }
         else {
             ctx.status = 201;

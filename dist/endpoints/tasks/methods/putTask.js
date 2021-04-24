@@ -14,10 +14,10 @@ const jsonwebtoken = require("jsonwebtoken");
 const putTasks = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const { body, header } = ctx.request;
     if (Object.keys(body).length === 0) {
-        ctx.badRequest(ctx, "Request body can't be empty");
+        ctx.badRequest("Request body can't be empty");
     }
     else if (body.taskLabel.trim().length === 0) {
-        ctx.badRequest(ctx, "Task title can't be empty");
+        ctx.badRequest("Task title can't be empty");
     }
     else {
         const documentQuery = { _id: new mongodb_1.ObjectID(ctx.params.id) };
@@ -35,7 +35,7 @@ const putTasks = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
                 .toArray();
         }
         else {
-            ctx.forbidden(ctx);
+            ctx.forbidden();
         }
     }
 });

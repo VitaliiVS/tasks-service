@@ -24,7 +24,7 @@ const errorMethods = (ctx, next) => {
         }
     };
     for (const code in codeMap) {
-        ctx[code] = (ctx, message) => {
+        ctx[code] = (message) => {
             const body = message ? { error: message } : codeMap[code].message;
             ctx.status = codeMap[code].code;
             ctx.body = body;

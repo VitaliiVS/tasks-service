@@ -28,6 +28,6 @@ exports.authRouter.post('/', (ctx) => __awaiter(void 0, void 0, void 0, function
         }
     }
     else {
-        ctx.badRequest(ctx, 'Invalid login or password');
+        ctx.badRequest('Invalid login or password');
     }
 }));

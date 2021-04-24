@@ -16,7 +16,7 @@ const getTaskById = async (ctx: DefaultContext) => {
 			_id: new ObjectID(ctx.params.id)
 		})
 	} else {
-		ctx.forbidden(ctx)
+		ctx.forbidden()
 	}
 }
 
