@@ -29,6 +29,6 @@ regiterRouter.post('/', async (ctx: DefaultContext) => {
 			}
 		}
 	} else {
-		ctx.badRequest(ctx, 'Username or password cannot be empty')
+		ctx.badRequest('Username or password cannot be empty')
 	}
 })

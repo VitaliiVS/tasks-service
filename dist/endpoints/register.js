@@ -34,6 +34,6 @@ exports.regiterRouter.post('/', (ctx) => __awaiter(void 0, void 0, void 0, funct
         }
     }
     else {
-        ctx.badRequest(ctx, 'Username or password cannot be empty');
+        ctx.badRequest('Username or password cannot be empty');
     }
 }));
