@@ -19,8 +19,7 @@ exports.authRouter.post('/', (ctx) => __awaiter(void 0, void 0, void 0, function
         .find({ username: username, password: password })
         .toArray();
     if (user[0]) {
-        if (user[0].username === username &&
-            user[0].password === password) {
+        if (user[0].username === username && user[0].password === password) {
             ctx.body = {
                 token: jwtInst.issue({
                     user: user[0]
