@@ -15,7 +15,9 @@ const jwtInst = require("../middlewares/jwt");
 exports.regiterRouter = new Router({ prefix: '/register' });
 exports.regiterRouter.post('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = ctx.request.body;
-    const users = yield ctx.app.people.find({ username: username }).toArray();
+    const users = yield ctx.app.people
+        .find({ username: username })
+        .toArray();
     if (username !== '' && password !== '') {
         if (users.some((elem) => elem.username === username)) {
             ctx.conflict('Username already in use');

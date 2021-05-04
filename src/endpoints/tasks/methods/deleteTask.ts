@@ -1,8 +1,8 @@
 import { ObjectID } from 'mongodb'
 import * as jsonwebtoken from 'jsonwebtoken'
-import { DefaultContext } from 'koa'
+import { DefaultContext, Middleware } from 'koa'
 
-const deleteTask = async (ctx: DefaultContext) => {
+const deleteTask = async (ctx: DefaultContext): Promise<void> => {
 	const documentQuery = { _id: new ObjectID(ctx.params.id) }
 	const headers = ctx.request.header
 	const jwt: any = jsonwebtoken.decode(headers.authorization.slice(7))
@@ -24,4 +24,4 @@ const deleteTask = async (ctx: DefaultContext) => {
 	}
 }
 
-export default () => deleteTask
+export default (): Middleware => deleteTask

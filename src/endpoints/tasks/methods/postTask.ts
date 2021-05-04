@@ -1,7 +1,7 @@
 import * as jsonwebtoken from 'jsonwebtoken'
-import { DefaultContext } from 'koa'
+import { DefaultContext, Middleware } from 'koa'
 
-const postTasks = async (ctx: DefaultContext) => {
+const postTasks = async (ctx: DefaultContext): Promise<void> => {
 	const { body, header } = ctx.request
 
 	if (Object.keys(body).length === 0) {
@@ -23,4 +23,4 @@ const postTasks = async (ctx: DefaultContext) => {
 	}
 }
 
-export default () => postTasks
+export default (): Middleware => postTasks

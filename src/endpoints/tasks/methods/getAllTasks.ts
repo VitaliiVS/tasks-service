@@ -1,7 +1,7 @@
 import * as jsonwebtoken from 'jsonwebtoken'
-import { DefaultContext } from 'koa'
+import { DefaultContext, Middleware } from 'koa'
 
-const getTasks = async (ctx: DefaultContext) => {
+const getTasks = async (ctx: DefaultContext): Promise<void> => {
 	const headers = ctx.request.header
 	const jwt: any = jsonwebtoken.decode(headers.authorization.slice(7))
 	const user = jwt.payload.user
@@ -12,4 +12,4 @@ const getTasks = async (ctx: DefaultContext) => {
 		.toArray()
 }
 
-export default () => getTasks
+export default (): Middleware => getTasks

@@ -1,7 +1,24 @@
-import { DefaultContext } from 'koa'
+import { DefaultContext, Middleware } from 'koa'
 
-const errorMethods = (ctx: DefaultContext, next: any) => {
-	const codeMap: any = {
+interface errorMessage {
+	error: string
+}
+
+interface requestMethod {
+	code: number
+	message: errorMessage
+}
+
+interface IObjectKeys {
+	[key: string]: requestMethod
+}
+
+interface IcodeMap extends IObjectKeys {
+	badRequest: requestMethod
+}
+
+const errorMethods = (ctx: DefaultContext, next: () => void): void => {
+	const codeMap: IcodeMap = {
 		badRequest: {
 			code: 400,
 			message: { error: 'Bad request' }
@@ -25,7 +42,7 @@ const errorMethods = (ctx: DefaultContext, next: any) => {
 	}
 
 	for (const code in codeMap) {
-		ctx[code] = (message?: string) => {
+		ctx[code] = (message?: string): DefaultContext => {
 			const body = message ? { error: message } : codeMap[code].message
 			ctx.status = codeMap[code].code
 			ctx.body = body
@@ -36,4 +53,4 @@ const errorMethods = (ctx: DefaultContext, next: any) => {
 	return next()
 }
 
-export default () => errorMethods
+export default (): Middleware<DefaultContext> => errorMethods

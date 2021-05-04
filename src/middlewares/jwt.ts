@@ -1,6 +1,6 @@
 import * as jwt from 'koa-jwt'
 import * as jsonwebtoken from 'jsonwebtoken'
-import { DefaultContext } from 'koa'
+import { DefaultContext, Middleware } from 'koa'
 
 const SECRET = 'test'
 const jwtInstance = jwt({ secret: SECRET })
@@ -15,8 +15,8 @@ const JWTErrorHandler = (ctx: DefaultContext, next: any) =>
 		}
 	})
 
-export const jwtInst = () => jwtInstance
-export const errorHandler = () => JWTErrorHandler
+export const jwtInst = (): Middleware => jwtInstance
+export const errorHandler = (): Middleware => JWTErrorHandler
 export const issue = (payload: any) => {
 	return jsonwebtoken.sign({ payload }, SECRET, { expiresIn: jwtExpDate })
 }
