@@ -1,5 +1,6 @@
 import * as jsonwebtoken from 'jsonwebtoken'
 import { DefaultContext, Middleware } from 'koa'
+import { IJwt } from '../../../common/types'
 
 const postTasks = async (ctx: DefaultContext): Promise<void> => {
   const { body, header } = ctx.request
@@ -10,7 +11,7 @@ const postTasks = async (ctx: DefaultContext): Promise<void> => {
     ctx.badRequest("Task title can't be empty")
   } else {
     const headers = header
-    const jwt: any = jsonwebtoken.decode(headers.authorization.slice(7))
+    const jwt = <IJwt>jsonwebtoken.decode(headers.authorization.slice(7))
     const user = jwt.payload.user
     const task = body
     task.createdBy = user.userId

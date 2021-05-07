@@ -1,10 +1,11 @@
 import { ObjectID } from 'mongodb'
 import * as jsonwebtoken from 'jsonwebtoken'
 import { DefaultContext, Middleware } from 'koa'
+import { IJwt } from '../../../common/types'
 
 const getTaskById = async (ctx: DefaultContext): Promise<void> => {
   const headers = ctx.request.header
-  const jwt: any = jsonwebtoken.decode(headers.authorization.slice(7))
+  const jwt = <IJwt>jsonwebtoken.decode(headers.authorization.slice(7))
   const user = jwt.payload.user
   const task = await ctx.app.tasks
     .find({ _id: new ObjectID(ctx.params.id) })

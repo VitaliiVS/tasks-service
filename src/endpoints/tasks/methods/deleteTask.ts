@@ -1,11 +1,12 @@
 import { ObjectID } from 'mongodb'
 import * as jsonwebtoken from 'jsonwebtoken'
 import { DefaultContext, Middleware } from 'koa'
+import { IJwt } from '../../../common/types'
 
 const deleteTask = async (ctx: DefaultContext): Promise<void> => {
   const documentQuery = { _id: new ObjectID(ctx.params.id) }
   const headers = ctx.request.header
-  const jwt: any = jsonwebtoken.decode(headers.authorization.slice(7))
+  const jwt = <IJwt>jsonwebtoken.decode(headers.authorization.slice(7))
   const user = jwt.payload.user
   const task = await ctx.app.tasks
     .find({ _id: new ObjectID(ctx.params.id) })
