@@ -1,6 +1,5 @@
 import * as Router from 'koa-router'
 import * as jwt from '../../middlewares/jwt'
-
 import getTasks from './methods/getAllTasks'
 import postTasks from './methods/postTask'
 import putTasks from './methods/putTask'

@@ -6,7 +6,7 @@ import * as logger from 'koa-logger'
 import { regiterRouter } from './endpoints/register'
 import { authRouter } from './endpoints/auth'
 import { tasksRouter } from './endpoints/tasks/tasks'
-import mongo from './mongo'
+import mongo from './server/mongo'
 import errorMethods from './middlewares/errorResponse'
 
 export const app = new Koa()

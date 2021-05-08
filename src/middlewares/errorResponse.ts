@@ -1,21 +1,5 @@
 import { DefaultContext, Middleware } from 'koa'
-
-interface errorMessage {
-  error: string
-}
-
-interface requestMethod {
-  code: number
-  message: errorMessage
-}
-
-interface IObjectKeys {
-  [key: string]: requestMethod
-}
-
-interface IcodeMap extends IObjectKeys {
-  badRequest: requestMethod
-}
+import { IcodeMap } from '../common/types'
 
 const errorMethods = (ctx: DefaultContext, next: () => void): void => {
   const codeMap: IcodeMap = {

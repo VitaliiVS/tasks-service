@@ -1,16 +1,21 @@
-interface IUser {
-  _id: string
-  username: string
-  password: string
-  userId: string
-}
-
 export interface IJwtPayload {
-  user: IUser
-  iat?: number
-  exp?: number
+  user: {
+    _id: string
+    username: string
+    password: string
+    userId: string
+  }
 }
 
 export interface IJwt {
   payload: IJwtPayload
+}
+
+export interface IcodeMap {
+  [key: string]: {
+    code: number
+    message: {
+      error: string
+    }
+  }
 }

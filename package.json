@@ -4,15 +4,14 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"build": "npx tsc",
-		"pretty": "npx prettier --write ./src/.",
-		"eslint": "npx eslint ./src/.",
+		"build": "npx eslint ./src/. --fix & npx prettier --write ./src/. & npx tsc",
 		"server": "node index ."
 	},
 	"author": "VitalyVS",
 	"license": "ISC",
 	"dependencies": {
 		"@koa/cors": "^3.1.0",
+		"dotenv": "^9.0.0",
 		"jsonwebtoken": "^8.5.1",
 		"koa": "^2.13.1",
 		"koa-bodyparser": "^4.3.0",

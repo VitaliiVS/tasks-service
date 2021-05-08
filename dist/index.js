@@ -8,7 +8,7 @@ const logger = require("koa-logger");
 const register_1 = require("./endpoints/register");
 const auth_1 = require("./endpoints/auth");
 const tasks_1 = require("./endpoints/tasks/tasks");
-const mongo_1 = require("./mongo");
+const mongo_1 = require("./server/mongo");
 const errorResponse_1 = require("./middlewares/errorResponse");
 exports.app = new Koa();
 mongo_1.default(exports.app);
