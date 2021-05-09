@@ -3,13 +3,13 @@ import { DefaultContext, Middleware } from 'koa'
 
 const postRegister = async (ctx: DefaultContext): Promise<void> => {
   const { username, password } = ctx.request.body
-
   const users = await ctx.app.people.find({ username: username }).toArray()
+  const userExist = users.some(
+    (elem: { username: string }) => elem.username === username
+  )
 
   if (username !== '' && password !== '') {
-    if (
-      users.some((elem: { username: string }) => elem.username === username)
-    ) {
+    if (userExist) {
       ctx.conflict('Username already in use')
     } else {
       ctx.status = 201

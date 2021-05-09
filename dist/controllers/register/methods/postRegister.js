@@ -13,8 +13,9 @@ const jwtInst = require("../../../middlewares/jwt");
 const postRegister = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = ctx.request.body;
     const users = yield ctx.app.people.find({ username: username }).toArray();
+    const userExist = users.some((elem) => elem.username === username);
     if (username !== '' && password !== '') {
-        if (users.some((elem) => elem.username === username)) {
+        if (userExist) {
             ctx.conflict('Username already in use');
         }
         else {
