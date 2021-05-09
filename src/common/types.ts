@@ -1,3 +1,11 @@
+import * as Koa from 'koa'
+import { Collection } from 'mongodb'
+
+export interface App extends Koa {
+  tasks: Collection
+  people: Collection
+}
+
 export interface IJwtPayload {
   user: {
     _id: string

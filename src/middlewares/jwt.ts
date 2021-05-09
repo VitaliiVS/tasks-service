@@ -7,17 +7,23 @@ const SECRET = 'test'
 const jwtInstance = jwt({ secret: SECRET })
 const jwtExpDate = '1h'
 
-const JWTErrorHandler = (ctx: DefaultContext, next: any) =>
-  next().catch((err: any) => {
+const JWTErrorHandler = async (
+  ctx: DefaultContext,
+  next: () => Promise<void>
+) => {
+  try {
+    await next()
+  } catch (err) {
     if (401 === err.status) {
       ctx.unauthorized()
     } else {
       throw err
     }
-  })
+  }
+}
 
 export const jwtInst = (): Middleware => jwtInstance
 export const errorHandler = (): Middleware => JWTErrorHandler
-export const issue = (payload: IJwtPayload) => {
+export const issue = (payload: IJwtPayload): string => {
   return jsonwebtoken.sign({ payload }, SECRET, { expiresIn: jwtExpDate })
 }

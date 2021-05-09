@@ -8,8 +8,9 @@ import { authRouter } from '../controllers/auth/auth'
 import { tasksRouter } from '../controllers/tasks/tasks'
 import mongo from './mongo'
 import errorMethods from '../middlewares/errorResponse'
+import { App } from '../common/types'
 
-export const app = new Koa()
+export const app = new Koa() as App
 
 mongo(app)
 app.use(errorMethods())
