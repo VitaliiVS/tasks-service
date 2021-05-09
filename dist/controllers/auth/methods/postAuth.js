@@ -9,11 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authRouter = void 0;
-const Router = require("koa-router");
-const jwtInst = require("../middlewares/jwt");
-exports.authRouter = new Router({ prefix: '/auth' });
-exports.authRouter.post('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+const jwtInst = require("../../../middlewares/jwt");
+const postAuth = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = ctx.request.body;
     const user = yield ctx.app.people
         .find({ username: username, password: password })
@@ -30,4 +27,5 @@ exports.authRouter.post('/', (ctx) => __awaiter(void 0, void 0, void 0, function
     else {
         ctx.badRequest('Invalid login or password');
     }
-}));
+});
+exports.default = () => postAuth;

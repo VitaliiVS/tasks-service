@@ -3,11 +3,11 @@ import * as cors from '@koa/cors'
 import * as BodyParser from 'koa-bodyparser'
 import * as logger from 'koa-logger'
 
-import { regiterRouter } from './endpoints/register'
-import { authRouter } from './endpoints/auth'
-import { tasksRouter } from './endpoints/tasks/tasks'
-import mongo from './server/mongo'
-import errorMethods from './middlewares/errorResponse'
+import { regiterRouter } from '../controllers/register/register'
+import { authRouter } from '../controllers/auth/auth'
+import { tasksRouter } from '../controllers/tasks/tasks'
+import mongo from './mongo'
+import errorMethods from '../middlewares/errorResponse'
 
 export const app = new Koa()
 

@@ -9,11 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.regiterRouter = void 0;
-const Router = require("koa-router");
-const jwtInst = require("../middlewares/jwt");
-exports.regiterRouter = new Router({ prefix: '/register' });
-exports.regiterRouter.post('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+const jwtInst = require("../../../middlewares/jwt");
+const postRegister = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = ctx.request.body;
     const users = yield ctx.app.people.find({ username: username }).toArray();
     if (username !== '' && password !== '') {
@@ -36,4 +33,5 @@ exports.regiterRouter.post('/', (ctx) => __awaiter(void 0, void 0, void 0, funct
     else {
         ctx.badRequest('Username or password cannot be empty');
     }
-}));
+});
+exports.default = () => postRegister;
