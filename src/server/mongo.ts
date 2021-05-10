@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb'
 import * as assert from 'assert'
 import * as dotenv from 'dotenv'
-import { App } from '../common/types'
+import { IApp } from '../common/types'
 
 dotenv.config()
 
@@ -10,7 +10,7 @@ const tasks = 'tasks'
 const people = 'people'
 const mongoUri = process.env.DB_URI_DEV as string
 
-export default (app: App): void => {
+export default (app: IApp): void => {
   const client = new MongoClient(mongoUri, { useUnifiedTopology: true })
 
   client.connect((err) => {

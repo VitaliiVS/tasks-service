@@ -1,7 +1,7 @@
 import * as Koa from 'koa'
 import { Collection } from 'mongodb'
 
-export interface App extends Koa {
+export interface IApp extends Koa {
   tasks: Collection
   people: Collection
 }
