@@ -16,10 +16,7 @@ const deleteTask = async (ctx: DefaultContext): Promise<void> => {
     await ctx.app.tasks.updateOne(documentQuery, {
       $set: { isDeleted: true }
     })
-    ctx.status = 200
-    ctx.body = await ctx.app.tasks
-      .find({ createdBy: user.userId, isDeleted: false })
-      .toArray()
+    await ctx.success({ createdBy: user.userId, isDeleted: false })
   } else {
     ctx.forbidden()
   }

@@ -12,10 +12,7 @@ const getTaskById = async (ctx: DefaultContext): Promise<void> => {
     .toArray()
 
   if (user.userId === task[0].createdBy) {
-    ctx.status = 200
-    ctx.body = await ctx.app.tasks.findOne({
-      _id: new ObjectID(ctx.params.id)
-    })
+    await ctx.success({ _id: new ObjectID(ctx.params.id) })
   } else {
     ctx.forbidden()
   }

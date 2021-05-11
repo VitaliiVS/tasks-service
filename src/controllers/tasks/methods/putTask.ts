@@ -21,10 +21,7 @@ const putTasks = async (ctx: DefaultContext): Promise<void> => {
 
     if (user.userId === task[0].createdBy) {
       await ctx.app.tasks.updateOne(documentQuery, valuesToUpdate)
-      ctx.status = 200
-      ctx.body = await ctx.app.tasks
-        .find({ createdBy: user.userId, isDeleted: false })
-        .toArray()
+      await ctx.success({ createdBy: user.userId, isDeleted: false })
     } else {
       ctx.forbidden()
     }

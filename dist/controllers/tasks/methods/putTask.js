@@ -29,10 +29,7 @@ const putTasks = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
             .toArray();
         if (user.userId === task[0].createdBy) {
             yield ctx.app.tasks.updateOne(documentQuery, valuesToUpdate);
-            ctx.status = 200;
-            ctx.body = yield ctx.app.tasks
-                .find({ createdBy: user.userId, isDeleted: false })
-                .toArray();
+            yield ctx.success({ createdBy: user.userId, isDeleted: false });
         }
         else {
             ctx.forbidden();

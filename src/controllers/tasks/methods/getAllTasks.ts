@@ -7,10 +7,7 @@ const getTasks = async (ctx: DefaultContext): Promise<void> => {
   const jwt = <IJwt>jsonwebtoken.decode(headers.authorization.slice(7))
   const user = jwt.payload.user
 
-  ctx.status = 200
-  ctx.body = await ctx.app.tasks
-    .find({ createdBy: user.userId, isDeleted: false })
-    .toArray()
+  await ctx.success({ createdBy: user.userId, isDeleted: false })
 }
 
 export default (): Middleware => getTasks

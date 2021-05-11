@@ -27,3 +27,10 @@ export interface IcodeMap {
     }
   }
 }
+
+export interface IFilter {
+  createdBy?: string
+  isDeleted?: boolean
+  isCompleted?: boolean
+  _id?: string
+}

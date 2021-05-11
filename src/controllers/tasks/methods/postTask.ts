@@ -17,10 +17,7 @@ const postTasks = async (ctx: DefaultContext): Promise<void> => {
     task.createdBy = user.userId
 
     await ctx.app.tasks.insertOne(task)
-    ctx.status = 201
-    ctx.body = await ctx.app.tasks
-      .find({ createdBy: user.userId, isDeleted: false })
-      .toArray()
+    await ctx.success({ createdBy: user.userId, isDeleted: false }, 201)
   }
 }
 

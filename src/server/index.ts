@@ -8,12 +8,14 @@ import { authRouter } from '../controllers/auth/auth'
 import { tasksRouter } from '../controllers/tasks/tasks'
 import mongo from './mongo'
 import errorMethods from '../middlewares/errorResponse'
+import successMethod from '../middlewares/successResponse'
 import { IApp } from '../common/types'
 
 export const app = new Koa() as IApp
 
 mongo(app)
 app.use(errorMethods())
+app.use(successMethod())
 app.use(cors())
 app.use(logger())
 app.use(BodyParser())

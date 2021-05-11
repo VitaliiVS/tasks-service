@@ -23,10 +23,7 @@ const deleteTask = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
         yield ctx.app.tasks.updateOne(documentQuery, {
             $set: { isDeleted: true }
         });
-        ctx.status = 200;
-        ctx.body = yield ctx.app.tasks
-            .find({ createdBy: user.userId, isDeleted: false })
-            .toArray();
+        yield ctx.success({ createdBy: user.userId, isDeleted: false });
     }
     else {
         ctx.forbidden();

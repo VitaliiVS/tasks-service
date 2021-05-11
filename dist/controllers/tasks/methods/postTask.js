@@ -25,10 +25,7 @@ const postTasks = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
         const task = body;
         task.createdBy = user.userId;
         yield ctx.app.tasks.insertOne(task);
-        ctx.status = 201;
-        ctx.body = yield ctx.app.tasks
-            .find({ createdBy: user.userId, isDeleted: false })
-            .toArray();
+        yield ctx.success({ createdBy: user.userId, isDeleted: false }, 201);
     }
 });
 exports.default = () => postTasks;

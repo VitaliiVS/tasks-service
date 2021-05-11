@@ -9,20 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongodb_1 = require("mongodb");
-const jsonwebtoken = require("jsonwebtoken");
-const getTaskById = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
-    const headers = ctx.request.header;
-    const jwt = jsonwebtoken.decode(headers.authorization.slice(7));
-    const user = jwt.payload.user;
-    const task = yield ctx.app.tasks
-        .find({ _id: new mongodb_1.ObjectID(ctx.params.id) })
-        .toArray();
-    if (user.userId === task[0].createdBy) {
-        yield ctx.success({ _id: new mongodb_1.ObjectID(ctx.params.id) });
-    }
-    else {
-        ctx.forbidden();
-    }
-});
-exports.default = () => getTaskById;
+const successMethod = (ctx, next) => {
+    ctx.success = (filter, status) => __awaiter(void 0, void 0, void 0, function* () {
+        ctx.body = yield ctx.app.tasks.find(filter).toArray();
+        ctx.status = status || 200;
+        return ctx;
+    });
+    return next();
+};
+exports.default = () => successMethod;
