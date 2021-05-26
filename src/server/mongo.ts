@@ -8,6 +8,7 @@ dotenv.config()
 const dbName = 'db'
 const tasks = 'tasks'
 const people = 'people'
+const collections = 'collections'
 const mongoUri = process.env.DB_URI_DEV as string
 
 export default (app: IApp): void => {
@@ -20,6 +21,7 @@ export default (app: IApp): void => {
 
     app.tasks = db.collection(tasks)
     app.people = db.collection(people)
+    app.collections = db.collection(collections)
 
     console.log('Connected successfully to server')
   })

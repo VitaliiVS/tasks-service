@@ -4,6 +4,7 @@ import { Collection } from 'mongodb'
 export interface IApp extends Koa {
   tasks: Collection
   people: Collection
+  collections: Collection
 }
 
 export interface IJwtPayload {

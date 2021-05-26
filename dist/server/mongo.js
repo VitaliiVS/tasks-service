@@ -7,6 +7,7 @@ dotenv.config();
 const dbName = 'db';
 const tasks = 'tasks';
 const people = 'people';
+const collections = 'collections';
 const mongoUri = process.env.DB_URI_DEV;
 exports.default = (app) => {
     const client = new mongodb_1.MongoClient(mongoUri, { useUnifiedTopology: true });
@@ -15,6 +16,7 @@ exports.default = (app) => {
         const db = client.db(dbName);
         app.tasks = db.collection(tasks);
         app.people = db.collection(people);
+        app.collections = db.collection(collections);
         console.log('Connected successfully to server');
     });
 };
