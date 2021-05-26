@@ -9,17 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const successMethod = (ctx, next) => {
-    ctx.success = (filter, status) => __awaiter(void 0, void 0, void 0, function* () {
-        if (ctx.url === '/tasks') {
-            ctx.body = yield ctx.app.tasks.find(filter).toArray();
-        }
-        else if (ctx.url === '/collections') {
-            ctx.body = yield ctx.app.collections.find(filter).toArray();
-        }
-        ctx.status = status || 200;
-        return ctx;
-    });
-    return next();
-};
-exports.default = () => successMethod;
+const jsonwebtoken = require("jsonwebtoken");
+const getCollections = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+    const headers = ctx.request.header;
+    const jwt = jsonwebtoken.decode(headers.authorization.slice(7));
+    const user = jwt.payload.user;
+    yield ctx.success({ createdBy: user.userId, isDeleted: false });
+});
+exports.default = () => getCollections;

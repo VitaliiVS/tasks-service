@@ -8,7 +8,7 @@ const dbName = 'db';
 const tasks = 'tasks';
 const people = 'people';
 const collections = 'collections';
-const mongoUri = process.env.DB_URI_DEV;
+const mongoUri = process.env.DB_URI_PROD;
 exports.default = (app) => {
     const client = new mongodb_1.MongoClient(mongoUri, { useUnifiedTopology: true });
     client.connect((err) => {

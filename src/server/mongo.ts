@@ -9,7 +9,7 @@ const dbName = 'db'
 const tasks = 'tasks'
 const people = 'people'
 const collections = 'collections'
-const mongoUri = process.env.DB_URI_DEV as string
+const mongoUri = process.env.DB_URI_PROD as string
 
 export default (app: IApp): void => {
   const client = new MongoClient(mongoUri, { useUnifiedTopology: true })
