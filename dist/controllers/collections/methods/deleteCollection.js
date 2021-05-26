@@ -9,23 +9,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const mongodb_1 = require("mongodb");
 const jsonwebtoken = require("jsonwebtoken");
-const postCollection = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
-    const { body, header } = ctx.request;
-    if (Object.keys(body).length === 0) {
-        ctx.badRequest("Request body can't be empty");
-    }
-    else if (!body.collectionName && body.collectionName.trim().length === 0) {
-        ctx.badRequest("Collection name can't be empty");
+const deleteCollection = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+    const documentQuery = { _id: new mongodb_1.ObjectID(ctx.params.id) };
+    const headers = ctx.request.header;
+    const jwt = jsonwebtoken.decode(headers.authorization.slice(7));
+    const user = jwt.payload.user;
+    const collection = yield ctx.app.collections
+        .find({ _id: new mongodb_1.ObjectID(ctx.params.id) })
+        .toArray();
+    if (user.userId === collection[0].createdBy) {
+        yield ctx.app.collections.updateOne(documentQuery, {
+            $set: { isDeleted: true }
+        });
+        yield ctx.success({ createdBy: user.userId }); //add isDleted
     }
     else {
-        const headers = header;
-        const jwt = jsonwebtoken.decode(headers.authorization.slice(7));
-        const user = jwt.payload.user;
-        const collection = body;
-        collection.createdBy = user.userId;
-        yield ctx.app.collections.insertOne(collection);
-        yield ctx.success({ createdBy: user.userId }, 201); //add isDleted
+        ctx.forbidden();
     }
 });
-exports.default = () => postCollection;
+exports.default = () => deleteCollection;

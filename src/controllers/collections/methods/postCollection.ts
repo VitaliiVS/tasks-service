@@ -7,17 +7,17 @@ const postCollection = async (ctx: DefaultContext): Promise<void> => {
 
   if (Object.keys(body).length === 0) {
     ctx.badRequest("Request body can't be empty")
-  } else if (body.taskLabel.trim().length === 0) {
-    ctx.badRequest("Collection title can't be empty")
+  } else if (!body.collectionName && body.collectionName.trim().length === 0) {
+    ctx.badRequest("Collection name can't be empty")
   } else {
     const headers = header
     const jwt = <IJwt>jsonwebtoken.decode(headers.authorization.slice(7))
     const user = jwt.payload.user
-    const task = body
-    task.createdBy = user.userId
+    const collection = body
+    collection.createdBy = user.userId
 
-    await ctx.app.tasks.insertOne(task)
-    await ctx.success({ createdBy: user.userId, isDeleted: false }, 201)
+    await ctx.app.collections.insertOne(collection)
+    await ctx.success({ createdBy: user.userId }, 201) //add isDleted
   }
 }
 

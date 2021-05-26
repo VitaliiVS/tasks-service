@@ -7,7 +7,7 @@ const getCollections = async (ctx: DefaultContext): Promise<void> => {
   const jwt = <IJwt>jsonwebtoken.decode(headers.authorization.slice(7))
   const user = jwt.payload.user
 
-  await ctx.success({ createdBy: user.userId, isDeleted: false })
+  await ctx.success({ createdBy: user.userId }) //add isDleted
 }
 
 export default (): Middleware => getCollections

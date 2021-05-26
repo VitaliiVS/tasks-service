@@ -5,9 +5,10 @@ const Router = require("koa-router");
 const jwt = require("../../middlewares/jwt");
 const postCollection_1 = require("./methods/postCollection");
 const getAllCollections_1 = require("./methods/getAllCollections");
+const deleteCollection_1 = require("./methods/deleteCollection");
 exports.collectionsRouter = new Router({ prefix: '/collections' });
 exports.collectionsRouter.use(jwt.errorHandler()).use(jwt.jwtInst());
 exports.collectionsRouter.get('/', getAllCollections_1.default());
 exports.collectionsRouter.post('/', postCollection_1.default());
 // collectionsRouter.put('/:id', putCollections())
-// collectionsRouter.delete('/:id', deleteCollection())
+exports.collectionsRouter.delete('/:id', deleteCollection_1.default());

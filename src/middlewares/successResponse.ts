@@ -6,9 +6,11 @@ const successMethod = (ctx: DefaultContext, next: () => void): void => {
     filter: IFilter,
     status?: number
   ): Promise<DefaultContext> => {
-    if (ctx.url === '/tasks') {
+    const tasks = /^\/tasks(\S*)$/g
+    const collections = /^\/collections(\S*)$/g
+    if (tasks.test(ctx.url)) {
       ctx.body = await ctx.app.tasks.find(filter).toArray()
-    } else if (ctx.url === '/collections') {
+    } else if (collections.test(ctx.url)) {
       ctx.body = await ctx.app.collections.find(filter).toArray()
     }
     ctx.status = status || 200

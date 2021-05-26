@@ -14,6 +14,6 @@ const getCollections = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const headers = ctx.request.header;
     const jwt = jsonwebtoken.decode(headers.authorization.slice(7));
     const user = jwt.payload.user;
-    yield ctx.success({ createdBy: user.userId, isDeleted: false });
+    yield ctx.success({ createdBy: user.userId }); //add isDleted
 });
 exports.default = () => getCollections;
